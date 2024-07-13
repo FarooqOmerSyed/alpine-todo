@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+    <title>todo-app</title>
+</head>
+
+<body>
+    <!-- alpine component starts here -->
+    <div class="m-24 p-6 mx-auto container border-4 max-w-2xl" x-data="{ todos: [], userInput: ''}">
+        <h1 class="text-2xl font-bold mb-4 text-orange-500">todos,-></h1>
+        <form x-on:submit.prevent>
+            <input x-model="userInput" class="border-2 py-1 px-2" type="text" placeholder="enter todo">
+            <button @click="if(userInput.trim().length)
+            todos.push({name: userInput, completed: false}); userInput = '' "
+                class="bg-blue-400 text-white px-2 py-1">Add
+                todo</button>
+        </form>
+
+        <template x-for="todo in todos">
+            <div class="mt-4 space-x-6 border-2 p-4">
+                <input type="checkbox" x-model="todo.completed">
+                <span x-text="todo.name" x-bind:class="{'completed': todo.completed}"></span>
+                <button class="bg-red-400 px-2 py-1 rounded-md float-right"
+                    @click="todos = todos.filter((currTodo)=> currTodo != todo)">delete</button>
+            </div>
+        </template>
+        <div class="flex items-center justify-between">
+            <button class="px-2 py-1 bg-green-400 rounded-md mt-6" @click="todos = []" x-show="todos.length">Clear
+                All</button>
+
+            <div x-show="todos.length" class="mt-6">
+                <span x-text="todos.filter((todo)=>todo.completed).length"></span>/
+                <span x-text="todos.length"></span> todos completed
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
